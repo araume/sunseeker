@@ -1,0 +1,7 @@
+express
+bcryptjs
+cors
+dotenv
+jsonwebtoken
+express-rate-limit
+mongoose

@@ -1,0 +1,196 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 8px;
+}
+:root{
+    --background-color: linear-gradient(90deg,rgba(255, 209, 213, 1) 0%, rgba(255, 236, 173, 1) 100%);
+    --primary-color: #4c2307;
+    --secondary-color: #ffda53;
+}
+@font-face {
+    font-family: saeada;
+    src: url(fonts/saeada.otf);
+}
+@font-face {
+    font-family: novecento;
+    src: url(fonts/novecento.otf);
+}
+.container{
+    background: var(--background-color);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: novecento;
+    justify-content: space-between;
+    background-attachment: fixed;
+}
+.content{
+    margin-top: 27vh;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+h1, p{
+    color: var(--primary-color);
+}
+h1{
+    font-family: saeada;
+    font-size: 10rem;
+}
+p{
+    font-size: 2rem;
+    font-weight: 900;
+}
+button{
+    margin-top: 10vh;
+    width: 12vw;
+    height: 6vh;
+    font-size: 2rem;
+    background-color: var(--secondary-color);
+    font-family: saeada;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+button:hover{
+    box-shadow: 0 0 9px 3px rgb(255, 249, 219);
+    transform: scale(1.03);
+    transition-duration: 0.3s;
+}
+footer{
+    margin-bottom: 1vh;
+    font-size: 15px;
+    font-weight: 700px;
+}
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+.modal-content {
+    background: var(--background-color);
+    margin: 5% auto;
+    padding: 40px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 600px;
+    min-width: 300px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+.close {
+    color: var(--primary-color);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+}
+.close:hover {
+    color: #000;
+}
+.modal-content h2 {
+    color: var(--primary-color);
+    font-family: saeada;
+    font-size: 3rem;
+    margin-bottom: 30px;
+    text-align: center;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-family: novecento;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--secondary-color);
+    border-radius: 8px;
+    font-size: 1.6rem;
+    font-family: novecento;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--primary-color);
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 40px;
+    max-height: 200px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(76, 35, 7, 0.3);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: none;
+    border-radius: 8px;
+    font-size: 2rem;
+    font-family: saeada;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    transform: scale(1.02);
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 2% auto;
+        padding: 20px;
+    }
+    
+    .modal-content h2 {
+        font-size: 2.5rem;
+    }
+    
+    .form-group label {
+        font-size: 1.6rem;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+        font-size: 1.4rem;
+    }
+    
+    .submit-btn {
+        font-size: 1.8rem;
+    }
+}
