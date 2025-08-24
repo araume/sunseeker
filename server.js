@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -69,11 +70,16 @@ app.use('/api/requests', requestRoutes);
 
 // Basic route
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.get('/admin', (req, res) => {
-    res.sendFile(__dirname + '/admin.html');
+    res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+// Serve verify page
+app.get('/verify/:id/:token', (req, res) => {
+    res.sendFile(path.join(__dirname, 'verify.html'));
 });
 
 // Remove debug route for production

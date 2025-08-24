@@ -31,6 +31,29 @@ const requestSchema = new mongoose.Schema({
     replySentAt: {
         type: Date
     },
+    // One-time verification
+    verificationToken: {
+        type: String
+    },
+    verificationTokenExpiresAt: {
+        type: Date
+    },
+    verificationUsed: {
+        type: Boolean,
+        default: false
+    },
+    paymentReference: {
+        type: String
+    },
+    receiptImage: {
+        type: Buffer
+    },
+    receiptImageContentType: {
+        type: String
+    },
+    verifiedAt: {
+        type: Date
+    },
     createdAt: {
         type: Date,
         default: Date.now

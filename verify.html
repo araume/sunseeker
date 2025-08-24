@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sunseeker Payment Verification</title>
+        <link rel="stylesheet" href="style.css">
+        <style>
+            *{
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+                font-size: 10px;
+            }
+            :root {
+                --background-color: linear-gradient(90deg, rgba(255, 209, 213, 1) 0%, rgba(255, 236, 173, 1) 100%);
+                --primary-color: #4c2307;
+                --secondary-color: #ffda53;
+            }
+            @font-face {
+                font-family: saeada;
+                src: url(fonts/saeada.otf);
+            }
+            @font-face {
+                font-family: novecento;
+                src: url(fonts/novecento.otf);
+            }
+            .verify-container{
+                background: var(--background-color);
+                width: 100%;
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 40px 20px;
+                font-family: novecento;
+            }
+            .verify-card{
+                background: rgba(255, 255, 255, 0.95);
+                padding: 32px;
+                border-radius: 16px;
+                width: 100%;
+                max-width: 680px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                border: 2px solid rgba(255, 218, 83, 0.6);
+            }
+            .brand { text-align: center; margin-bottom: 18px; }
+            .brand .logo { font-family: saeada; font-size: 3rem; color: var(--primary-color); }
+            .brand .subtitle { color: #6b4a35; font-size: 1.3rem; font-weight: 700; }
+
+            .headline { text-align: center; margin: 8px 0 18px; }
+            .headline h1{
+                color: var(--primary-color);
+                font-family: saeada;
+                font-size: 2.4rem;
+                margin: 0;
+            }
+
+            .stepper {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+                margin: 12px 0 24px;
+            }
+            .step {
+                background: rgba(255,255,255,0.9);
+                border: 2px solid var(--secondary-color);
+                border-radius: 10px;
+                padding: 10px 12px;
+                text-align: center;
+                color: var(--primary-color);
+                font-size: 1.2rem;
+                font-weight: 700;
+            }
+
+            .verify-form .form-group{ margin-bottom: 16px; }
+            .verify-form label{ display:block; color: var(--primary-color); font-size:1.5rem; font-weight: 800; margin-bottom:8px; }
+            .input-text{
+                width: 100%; padding: 12px; border: 2px solid var(--secondary-color); border-radius: 10px; font-size: 1.4rem; font-family: novecento; background: rgba(255,255,255,0.95); color: var(--primary-color);
+            }
+
+            .drop-zone {
+                border: 2px dashed var(--secondary-color);
+                border-radius: 12px;
+                background: rgba(255,255,255,0.85);
+                padding: 18px;
+                text-align: center;
+                color: var(--primary-color);
+                cursor: pointer;
+                transition: background 0.2s ease, border-color 0.2s ease;
+            }
+            .drop-zone:hover { background: rgba(255,255,255,0.95); }
+            .drop-zone.highlight { border-color: var(--primary-color); }
+            .drop-zone .hint { font-size: 1.3rem; font-weight: 700; }
+            .drop-zone .subhint { font-size: 1.1rem; color: #5a3f2d; margin-top: 6px; }
+
+            .preview {
+                margin-top: 12px;
+                display: none;
+                background: rgba(255, 255, 255, 0.9);
+                border: 2px solid var(--secondary-color);
+                border-radius: 10px;
+                padding: 10px;
+            }
+            .preview img { max-width: 100%; height: auto; border-radius: 8px; display: block; margin: 0 auto; }
+            .file-name { margin-top: 6px; font-size: 1.2rem; color: #6b4a35; text-align: center; }
+
+            .verify-actions{ display:flex; gap:10px; margin-top: 18px; flex-wrap: wrap; }
+            .verify-btn{ flex:1; background: var(--secondary-color); color: var(--primary-color); border:none; padding: 12px 20px; border-radius:10px; font-size:1.6rem; font-family: saeada; cursor:pointer; font-weight: 700; transition: all 0.2s ease; }
+            .verify-btn:hover{ background: var(--primary-color); color: var(--secondary-color); transform: translateY(-1px); }
+            .verify-btn[disabled]{ opacity: 0.6; cursor: not-allowed; transform: none; }
+            .secondary-btn { background: #ececec; color: var(--primary-color); }
+            .secondary-btn:hover { background: #ddd; color: var(--primary-color); }
+
+            .verify-note{ color:#4c2307; font-size:1.2rem; margin-top:8px; text-align:center; opacity: 0.8; }
+            .policy-note{ color:#6b4a35; font-size:1.1rem; margin-top:8px; text-align:center; }
+            .status { margin-top: 14px; text-align: center; font-size: 1.3rem; font-weight: 800; }
+            .status.success { color: #2e7d32; }
+            .status.error { color: #c62828; }
+
+            @media (max-width: 640px) {
+                .brand .logo { font-size: 2.4rem; }
+                .headline h1 { font-size: 2rem; }
+                .stepper { grid-template-columns: 1fr; }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="verify-container">
+            <div class="verify-card">
+                <div class="brand">
+                    <div class="logo">Sunseeker</div>
+                    <div class="subtitle">Find what you seek</div>
+                </div>
+
+                <div class="headline">
+                    <h1>Payment Verification</h1>
+                </div>
+
+                <div class="stepper">
+                    <div class="step">1. Enter Reference</div>
+                    <div class="step">2. Upload Receipt</div>
+                    <div class="step">3. Submit</div>
+                </div>
+
+                <form id="verifyForm" class="verify-form" novalidate>
+                    <div class="form-group">
+                        <label for="reference">Reference Number</label>
+                        <input class="input-text" type="text" id="reference" name="reference" required placeholder="e.g. ABC123456" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="receipt">Receipt Screenshot</label>
+                        <div id="dropZone" class="drop-zone" role="button" tabindex="0" aria-label="Upload receipt">
+                            <div class="hint">Drag & drop your receipt image here</div>
+                            <div class="subhint">or click to browse (PNG, JPG, GIF, WEBP, max 5MB)</div>
+                            <input type="file" id="receipt" name="receipt" accept="image/*" style="display:none;" />
+                        </div>
+                        <div id="preview" class="preview">
+                            <img id="previewImg" alt="Receipt preview" />
+                            <div id="fileName" class="file-name"></div>
+                        </div>
+                    </div>
+
+                    <div class="verify-actions">
+                        <button id="submitBtn" type="submit" class="verify-btn">Submit Verification</button>
+                        <button id="clearBtn" type="button" class="verify-btn secondary-btn">Clear</button>
+                    </div>
+                    <div class="verify-note">Please ensure the reference matches your payment and the screenshot is clear.</div>
+                    <div class="policy-note">Your information is kept private and used only to verify your request.</div>
+                    <div id="verifyStatus" class="status" aria-live="polite"></div>
+                </form>
+            </div>
+        </div>
+        <script>
+            (function(){
+                const form = document.getElementById('verifyForm');
+                const statusEl = document.getElementById('verifyStatus');
+                const submitBtn = document.getElementById('submitBtn');
+                const clearBtn = document.getElementById('clearBtn');
+                const fileInput = document.getElementById('receipt');
+                const dropZone = document.getElementById('dropZone');
+                const preview = document.getElementById('preview');
+                const previewImg = document.getElementById('previewImg');
+                const fileNameEl = document.getElementById('fileName');
+
+                // Parse id and token from URL /verify/:id/:token
+                const parts = window.location.pathname.split('/');
+                const id = parts[2];
+                const token = parts[3];
+
+                // Helpers
+                const allowedTypes = ['image/png','image/jpeg','image/jpg','image/gif','image/webp'];
+                const maxBytes = 5 * 1024 * 1024; // 5MB
+
+                function resetStatus(){
+                    statusEl.textContent = '';
+                    statusEl.className = 'status';
+                }
+
+                function setStatus(msg, type){
+                    statusEl.textContent = msg;
+                    statusEl.className = 'status ' + (type || '');
+                }
+
+                function showPreview(file){
+                    if (!file) { preview.style.display = 'none'; return; }
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        previewImg.src = reader.result;
+                        preview.style.display = 'block';
+                        fileNameEl.textContent = file.name;
+                    };
+                    reader.readAsDataURL(file);
+                }
+
+                function validateFile(file){
+                    if (!file) return 'Receipt image is required';
+                    if (!allowedTypes.includes(file.type)) return 'Unsupported file type';
+                    if (file.size > maxBytes) return 'File is too large (max 5MB)';
+                    return '';
+                }
+
+                // Drop zone interactions
+                dropZone.addEventListener('click', () => fileInput.click());
+                dropZone.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }});
+                ;['dragenter','dragover'].forEach(evt => dropZone.addEventListener(evt, (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('highlight'); }));
+                ;['dragleave','drop'].forEach(evt => dropZone.addEventListener(evt, (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('highlight'); }));
+                dropZone.addEventListener('drop', (e) => {
+                    const file = e.dataTransfer.files && e.dataTransfer.files[0];
+                    if (!file) return;
+                    const err = validateFile(file);
+                    if (err) { setStatus(err, 'error'); return; }
+                    resetStatus();
+                    fileInput.files = e.dataTransfer.files; // assign dropped file
+                    showPreview(file);
+                });
+
+                fileInput.addEventListener('change', () => {
+                    resetStatus();
+                    const file = fileInput.files[0];
+                    const err = validateFile(file);
+                    if (err) { setStatus(err, 'error'); fileInput.value = ''; preview.style.display = 'none'; return; }
+                    showPreview(file);
+                });
+
+                clearBtn.addEventListener('click', () => {
+                    form.reset();
+                    preview.style.display = 'none';
+                    resetStatus();
+                    document.getElementById('reference').focus();
+                });
+
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    resetStatus();
+
+                    const reference = document.getElementById('reference').value.trim();
+                    const receipt = fileInput.files[0];
+
+                    if (!reference) { setStatus('Reference is required', 'error'); return; }
+                    const fileErr = validateFile(receipt);
+                    if (fileErr) { setStatus(fileErr, 'error'); return; }
+
+                    const formData = new FormData();
+                    formData.append('reference', reference);
+                    formData.append('token', token);
+                    formData.append('receipt', receipt);
+
+                    try {
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = 'Submitting...';
+                        form.setAttribute('aria-busy', 'true');
+
+                        const res = await fetch(`/api/requests/${id}/verify`, {
+                            method: 'POST',
+                            body: formData
+                        });
+                        if (!res.ok) {
+                            const data = await res.json().catch(() => ({ message: 'Submission failed' }));
+                            throw new Error(data.message || 'Submission failed');
+                        }
+                        setStatus('Verification submitted successfully. Thank you!', 'success');
+                        form.reset();
+                        preview.style.display = 'none';
+                    } catch (err) {
+                        setStatus(err.message, 'error');
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Submit Verification';
+                        form.removeAttribute('aria-busy');
+                    }
+                });
+            })();
+        </script>
+    </body>
+</html>
+
