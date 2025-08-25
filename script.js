@@ -92,3 +92,59 @@ form.addEventListener("submit", async (e) => {
     }
 });
 
+
+// Guidelines modal
+const guidelinesBtn = document.getElementById("guidelinesBtn");
+if (guidelinesBtn) {
+    guidelinesBtn.addEventListener("click", openGuidelinesModal);
+}
+
+function openGuidelinesModal() {
+    const modalId = "guidelinesModal";
+    if (document.getElementById(modalId)) return;
+    const modalHTML = `
+    <div id="guidelinesModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="guidelinesTitle">
+        <div class="modal-content">
+            <span class="close" id="guidelinesClose">&times;</span>
+            <h2 id="guidelinesTitle">Guidelines [Read first!]</h2>
+            <pre id="guidelinesText" style="white-space: pre-wrap; font-family: novecento; font-size: 1.4rem; color: var(--primary-color); background: rgba(255,255,255,0.9); border: 2px solid var(--secondary-color); border-radius: 8px; padding: 12px; margin-top: 10px;"></pre>
+        </div>
+    </div>`;
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    const overlay = document.getElementById("guidelinesModal");
+    const closeBtn = document.getElementById("guidelinesClose");
+    const textEl = document.getElementById("guidelinesText");
+
+    if (overlay) overlay.style.display = "block";
+
+    const guidelinesText = `Sunseeker is a platform where you can request me, the seeker to do the resource searching for you. As of now, my service is for academic materials only in order to help students with their studies and research
+
+1. Click the "Request" button to start
+
+2. Fill out the provided form with your desired alias, your email address, and what you're requesting. Be as specific as possible with your request details.
+
+3. Price for the service starts at ₱50.00 and can go up to ₱1000(unlikely to reach this price but the possibility still exists.) depending on the request
+
+4. After submitting your request, please wait for a notification from the seeker. They will confirm whether they were able to find what you're requesting and send you a gcash QR code for you to send your payment on.
+
+5. Within the notification link, there is a verification link you can use to verify your payment by sending us the transaction reference and a screenshot of the e-receipt.
+
+6. After the seeker verifies your payment, they will send a link through email shortly to a downloadable file.`;
+    if (textEl) textEl.textContent = guidelinesText;
+
+    function onOverlayClick(e) {
+        if (e.target === overlay) closeGuidelinesModal();
+    }
+    function onKeyDown(e) {
+        if (e.key === 'Escape') closeGuidelinesModal();
+    }
+    if (overlay) overlay.addEventListener('click', onOverlayClick);
+    if (closeBtn) closeBtn.addEventListener('click', closeGuidelinesModal);
+    document.addEventListener('keydown', onKeyDown, { once: true });
+
+    function closeGuidelinesModal() {
+        const el = document.getElementById("guidelinesModal");
+        if (el) el.remove();
+    }
+}

@@ -1,0 +1,13 @@
+Sunseeker is a platform where you can request me, the seeker to do the resource searching for you. As of now, my service is for academic materials only in order to help students with their studies and research
+
+1. Click the "Request" button to start
+
+2. Fill out the provided form with your desired alias, your email address, and what you're requesting. Be as specific as possible with your request details.
+
+3. Price for the service starts at ₱50.00 and can go up to ₱1000(unlikely to reach this price but the possibility still exists.) depending on the request
+
+4. After submitting your request, please wait for a notification from the seeker. They will confirm whether they were able to find what you're requesting and send you a gcash QR code for you to send your payment on.
+
+5. Within the notification link, there is a verification link you can use to verify your payment by sending us the transaction reference and a screenshot of the e-receipt.
+
+6. After the seeker verifies your payment, they will send a link through email shortly to a downloadable file.
