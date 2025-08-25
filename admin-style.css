@@ -117,6 +117,190 @@
     margin: 0 auto;
 }
 
+/* Admin Dashboard theme refinements */
+#dashboardRoot{
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+#dashboardHeader{
+    position: static;
+    background: rgba(255, 255, 255, 0.92);
+    border: 2px solid var(--secondary-color) !important;
+    border-radius: 14px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(6px);
+    margin: 16px 20px 12px;
+}
+
+#dashboardHeader h1{
+    color: var(--primary-color);
+}
+
+/* Tabs */
+#tabRequests,
+#tabVerifications,
+#tabLogs{
+    background: #f4f4f4;
+    color: var(--primary-color);
+    border: 2px solid transparent;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 1.4rem;
+    font-family: saeada;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#tabRequests:hover,
+#tabVerifications:hover,
+#tabLogs:hover{
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--secondary-color);
+}
+
+/* Active tab visual (inline style toggling still applies) */
+#tabRequests[style*="background: #ffda53"],
+#tabVerifications[style*="background: #ffda53"],
+#tabLogs[style*="background: #ffda53"]{
+    background: var(--secondary-color) !important;
+    color: var(--primary-color);
+}
+
+/* Scrollable content area */
+#dashboardContent{
+    padding: 16px 20px 20px;
+    overflow-y: auto;
+    min-height: 0;
+    /* Themed scrollbar (Firefox) */
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) #fff3cc;
+    scrollbar-gutter: stable both-edges;
+}
+
+/* Themed scrollbar (WebKit) */
+#dashboardContent::-webkit-scrollbar{
+    width: 12px;
+    height: 12px;
+}
+#dashboardContent::-webkit-scrollbar-track{
+    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.85));
+    border-radius: 12px;
+}
+#dashboardContent::-webkit-scrollbar-thumb{
+    background: linear-gradient(180deg, #ffeaa0, var(--secondary-color));
+    border-radius: 12px;
+    border: 3px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15) inset;
+}
+#dashboardContent::-webkit-scrollbar-thumb:hover{
+    background: linear-gradient(180deg, #ffe27a, var(--secondary-color));
+}
+#dashboardContent::-webkit-scrollbar-thumb:active{
+    background: linear-gradient(180deg, #ffd95a, #f1ca4c);
+}
+#dashboardContent::-webkit-scrollbar-corner{
+    background: transparent;
+}
+#dashboardContent::-webkit-scrollbar-button{
+    display: none;
+}
+
+@media (max-width: 768px) {
+    #dashboardContent::-webkit-scrollbar{ width: 10px; height: 10px; }
+}
+
+/* Cards / Panels */
+#requestsView,
+#verificationsView,
+#logsView{
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 14px;
+    padding: 26px !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    border: 2px solid rgba(255, 218, 83, 0.5);
+}
+
+#requestsView h2,
+#verificationsView h2,
+#logsView h2{
+    color: var(--primary-color);
+    font-family: saeada;
+}
+
+/* Items */
+.request-item{
+    border: 2px solid var(--secondary-color) !important;
+    border-radius: 12px !important;
+    background: rgba(255, 255, 255, 0.85) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    padding: 18px !important;
+    margin-bottom: 16px !important;
+    word-break: break-word;
+}
+
+.request-item p,
+.request-item h3{
+    color: var(--primary-color) !important;
+}
+
+/* Buttons */
+.logout-btn{
+    background-color: var(--primary-color) !important;
+    color: var(--secondary-color) !important;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 1.6rem;
+    font-family: saeada;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.logout-btn:hover{
+    background-color: var(--secondary-color) !important;
+    color: var(--primary-color) !important;
+}
+
+.request-item button,
+#logsApply{
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 1.4rem;
+    font-family: saeada;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.request-item button:hover,
+#logsApply:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+}
+
+/* Inputs in Logs filter */
+#logsView select,
+#logsView input[type="date"]{
+    padding: 8px;
+    border: 2px solid var(--secondary-color);
+    border-radius: 8px;
+    font-size: 1.4rem;
+    background: rgba(255,255,255,0.9);
+    color: var(--primary-color);
+}
+
+/* Empty state */
+.no-requests{
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 1.6rem;
+    background: rgba(255,255,255,0.7);
+    border: 2px dashed var(--secondary-color);
+    border-radius: 12px;
+    padding: 24px;
+}
+
 .dashboard h1{
     color: var(--primary-color);
     font-family: saeada;

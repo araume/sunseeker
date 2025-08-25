@@ -4,6 +4,14 @@ const Admin = require('../models/Admin');
 const auth = require('../middleware/auth');
 
 const router = express.Router();
+const COOKIE_NAME = process.env.ADMIN_SESSION_COOKIE_NAME || 'admin_session';
+const COOKIE_OPTIONS = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'Strict' : 'Lax',
+    path: '/',
+    maxAge: 15 * 60 * 1000 // 15 minutes
+};
 
 // Input validation helper
 const sanitizeInput = (input) => {
@@ -20,7 +28,7 @@ const validatePassword = (password) => {
 // Register admin (first time setup)
 router.post('/register', async (req, res) => {
     try {
-        // Check if any admin already exists
+        // Check if any admin already exists (singleton guard)
         const existingAdmin = await Admin.findOne();
         if (existingAdmin) {
             return res.status(400).json({ message: 'Admin already exists. Cannot register multiple admins.' });
@@ -45,8 +53,15 @@ router.post('/register', async (req, res) => {
             });
         }
 
-        const admin = new Admin({ username: sanitizedUsername, password });
-        await admin.save();
+        const admin = new Admin({ username: sanitizedUsername, password, singleton: 1 });
+        try {
+            await admin.save();
+        } catch (e) {
+            if (e.code === 11000) {
+                return res.status(400).json({ message: 'Admin already exists.' });
+            }
+            throw e;
+        }
 
         const token = jwt.sign(
             { adminId: admin._id, username: admin.username },
@@ -54,9 +69,9 @@ router.post('/register', async (req, res) => {
             { expiresIn: '24h' }
         );
 
+        res.cookie(COOKIE_NAME, token, COOKIE_OPTIONS);
         res.status(201).json({
             message: 'Admin created successfully',
-            token,
             admin: {
                 id: admin._id,
                 username: admin.username,
@@ -103,9 +118,9 @@ router.post('/login', async (req, res) => {
             { expiresIn: '24h' }
         );
 
+        res.cookie(COOKIE_NAME, token, COOKIE_OPTIONS);
         res.json({
             message: 'Login successful',
-            token,
             admin: {
                 id: admin._id,
                 username: admin.username,
@@ -128,6 +143,18 @@ router.get('/profile', auth, async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
+});
+
+// Logout admin (clear cookie)
+router.post('/logout', auth, (req, res) => {
+    // Clear using the same attributes to ensure browsers remove it
+    res.clearCookie(COOKIE_NAME, { 
+        ...COOKIE_OPTIONS,
+        // Explicitly expire now
+        expires: new Date(0),
+        maxAge: 0
+    });
+    res.json({ message: 'Logged out' });
 });
 
 module.exports = router;
