@@ -12,6 +12,13 @@ const adminSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    // Unique singleton guard to prevent multiple admins in race conditions
+    singleton: {
+        type: Number,
+        unique: true,
+        default: 1,
+        select: false
+    },
     createdAt: {
         type: Date,
         default: Date.now

@@ -90,7 +90,7 @@ const createNotificationEmail = (recipientName, requestDetails, options = {}) =>
                 </div>
                 
                 <p>We typically respond within 24-48 hours. You'll receive a follow-up email with our response.</p>
-                <div style="text-align: center;"><a href="http://localhost:3000" class="cta-button">Visit Our Website</a></div>
+                <div style="text-align: center;"><a href="${process.env.PUBLIC_BASE_URL || 'http://localhost:3000'}" class="cta-button">Visit Our Website</a></div>
             </div>
             
             <div class="footer">

@@ -5,8 +5,16 @@ const { sendNotificationEmail, sendReplyEmail } = require('../utils/emailService
 const multer = require('multer');
 const crypto = require('crypto');
 const path = require('path');
+const rateLimit = require('express-rate-limit');
 
 const router = express.Router();
+// Add a rate limiter for verification submissions to mitigate abuse
+const verifyLimiter = rateLimit({
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    max: 20,
+    standardHeaders: true,
+    legacyHeaders: false
+});
 
 // Multer setup for in-memory uploads
 const upload = multer({
@@ -310,6 +318,8 @@ router.delete('/:id/verification', auth, async (req, res) => {
         request.receiptImageContentType = undefined;
         request.verifiedAt = undefined;
         request.verificationUsed = false;
+        request.verificationToken = undefined;
+        request.verificationTokenExpiresAt = undefined;
         await request.save();
         res.json({ message: 'Verification deleted successfully' });
     } catch (error) {
