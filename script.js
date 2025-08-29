@@ -130,7 +130,9 @@ function openGuidelinesModal() {
 
 5. Within the notification link, there is a verification link you can use to verify your payment by sending us the transaction reference and a screenshot of the e-receipt.
 
-6. After the seeker verifies your payment, they will send a link through email shortly to a downloadable file.`;
+6. After the seeker verifies your payment, they will send a link through email shortly to a downloadable file.
+
+7. Refunds are not available for this service. Though special cases may be considered.`;
     if (textEl) textEl.textContent = guidelinesText;
 
     function onOverlayClick(e) {
