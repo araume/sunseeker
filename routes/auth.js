@@ -9,8 +9,8 @@ const COOKIE_OPTIONS = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: process.env.NODE_ENV === 'production' ? 'Strict' : 'Lax',
-    path: '/',
-    maxAge: 15 * 60 * 1000 // 15 minutes
+    path: '/'
+    // Note: no maxAge/expires here → session cookie that lasts until browser is closed
 };
 
 // Input validation helper
@@ -63,10 +63,14 @@ router.post('/register', async (req, res) => {
             throw e;
         }
 
+        const jwtOptions = {};
+        if (process.env.AUTH_JWT_EXPIRES) {
+            jwtOptions.expiresIn = process.env.AUTH_JWT_EXPIRES;
+        }
         const token = jwt.sign(
             { adminId: admin._id, username: admin.username },
             process.env.JWT_SECRET,
-            { expiresIn: '24h' }
+            jwtOptions
         );
 
         res.cookie(COOKIE_NAME, token, COOKIE_OPTIONS);
@@ -112,10 +116,14 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
+        const jwtOptions = {};
+        if (process.env.AUTH_JWT_EXPIRES) {
+            jwtOptions.expiresIn = process.env.AUTH_JWT_EXPIRES;
+        }
         const token = jwt.sign(
             { adminId: admin._id, username: admin.username },
             process.env.JWT_SECRET,
-            { expiresIn: '24h' }
+            jwtOptions
         );
 
         res.cookie(COOKIE_NAME, token, COOKIE_OPTIONS);
